@@ -4,8 +4,8 @@ const moment = require("moment")
 
 class db{
     constructor(){
-        const sequelize = new Sequelize('reporter',"root","kevin",{
-            host: "localhost",
+        const sequelize = new Sequelize('qealbg4ypevywib3',"rinmyyowhxtobvos","nj2y9j1vn3otuawn",{
+            host: "lgg2gx1ha7yp2w0k.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
             dialect: 'mysql',
             pool: {
                 max: 5,
