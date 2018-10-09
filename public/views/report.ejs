@@ -37,10 +37,14 @@
 					<option value="<%= problem_list[index] %>"><%= problem_list[index] %></option>
 				<% } %>
 			</select>
+
+			<br>
+			<label id="extension" for="sed" hidden>例外問題回報內容（請填入你的問題）:</label>
+			<input id="cr" name="cr" value="" hidden> 
+			<input id="pi" name="pi" value="" hidden>
+			<input id="ps" name="ps" value="" hidden>
 		</div>
-		<input id="cr" name="cr" value="" hidden>
-		<input id="pi" name="pi" value="" hidden>
-		<input id="ps" name="ps" value="" hidden>
+		
 		
 	<button type="submit" class="btn btn-primary center-block">Submit</button>
 	</form>
@@ -58,6 +62,16 @@ $('select#problem_id').on('change', function(e){
               this.options[this.selectedIndex].value,
 			  $(this).find("option:selected").val(),);
 	$('#pi').attr('value', this.value)
+
+	if(this.value == "Other"){
+		$('#pi').attr('class','form-control')
+		$('#extension').show()
+		$('#pi').show()
+	}
+	else{
+		$('#extension').hide()
+		$('#pi').hide()
+	}
 });
 $('select#problem_seat').on('change', function(e){
   	console.log(this.value,
