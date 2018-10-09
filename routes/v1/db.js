@@ -1,11 +1,14 @@
 // primitive
 const Sequelize = require('sequelize')
 const moment = require("moment")
+const jsfs = require('jsonfile')
+const path = require('path')
 
 class db{
     constructor(){
-        const sequelize = new Sequelize('qealbg4ypevywib3',"rinmyyowhxtobvos","nj2y9j1vn3otuawn",{
-            host: "lgg2gx1ha7yp2w0k.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+        var dbconfig = jsfs.readFileSync(path.join(__dirname,'.dbconfig.json'));
+        const sequelize = new Sequelize(dbconfig.db_schema,dbconfig.db_username,dbconfig.db_userpasswd,{
+            host: dbconfig.db_host,
             dialect: 'mysql',
             pool: {
                 max: 5,
