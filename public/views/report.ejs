@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- Title & Icon -->
+<title><%= title %></title>
+<link rel="icon" href="https://i.imgur.com/nfeMkGD.png">
+<% include ../elements/meta %>
+<% include ../elements/lib %>
+</head>
+<body>
+
+<div class="container font-fresca">
+	<!-- Purpose -->
+	<h2> <%= title %> </h2>
+	<hr>
+	<form id="reporter" method="GET" action="/report">
+		<div class="form-group">
+			<label for="cr">教室編號:</label>
+			<select class="form-control" id="classroom">
+				<option selected>Choose...</option>
+				<option value="65304">65304</option>
+				<option value="65203">65203</option>
+			</select>
+			<br>
+			<label for="problem_seat">發生問題的座位編號:</label>
+			<select class="form-control" id="problem_seat">
+				<option selected>Choose...</option>
+				<% for(var i=1; i <= 130; i++){ %>
+					<option value="<%= i %>"><%= i %></option>
+				<% } %>
+			</select>
+			<br>
+			<label for="problem_id">問題回報類型:</label>
+			<select class="form-control" id="problem_id">
+				<option selected>Choose...</option>
+				<% for(var index in problem_list){ %>
+					<option value="<%= problem_list[index] %>"><%= problem_list[index] %></option>
+				<% } %>
+			</select>
+		</div>
+		<input id="cr" name="cr" value="" hidden>
+		<input id="pi" name="pi" value="" hidden>
+		<input id="ps" name="ps" value="" hidden>
+		
+	<button type="submit" class="btn btn-primary center-block">Submit</button>
+	</form>
+</div>
+
+<script>
+$('select#classroom').on('change', function(e){
+	console.log(this.value,
+              this.options[this.selectedIndex].value,
+			  $(this).find("option:selected").val(),);
+	$('#cr').attr('value', this.value)
+});
+$('select#problem_id').on('change', function(e){
+  	console.log(this.value,
+              this.options[this.selectedIndex].value,
+			  $(this).find("option:selected").val(),);
+	$('#pi').attr('value', this.value)
+});
+$('select#problem_seat').on('change', function(e){
+  	console.log(this.value,
+              this.options[this.selectedIndex].value,
+			  $(this).find("option:selected").val(),);
+	$('#ps').attr('value', this.value)
+});
+
+
+$('#reporter').submit(function(e){
+	if($('#cr').val() == 'Choose...' || $('#cr').val().length == 0){
+		alert('請輸入 "教室編號" ！');
+		e.preventDefault();
+		return false;
+	}
+	if($('#pi').val() == 'Choose...' || $('#pi').val().length == 0){
+		alert('請輸入 "發生問題的座位編號" ！');
+		e.preventDefault();
+		return false;
+	}
+	if($('#ps').val() == 'Choose...' || $('#ps').val().length == 0){
+		alert('請輸入 "問題回報類型" ！');
+		e.preventDefault();
+		return false;
+	}
+
+
+})
+</script>
+
+<!-- Footer -->
+<% include ../elements/normal_footer_bs %>
+</html>

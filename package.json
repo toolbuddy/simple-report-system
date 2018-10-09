@@ -1,0 +1,25 @@
+{
+    "name": "simple-report-system",
+    "version": "0.0.1",
+    "main": "app.js",
+    "config": {
+        "port": 3000
+    },
+    "scripts": {
+        "build": "npm install",
+        "start": "node app.js",
+        "all": "npm run build && npm run start"
+    },
+    "license": "GPL-3.0",
+    "dependencies": {
+        "body-parser": "^1.15.2",
+        "ejs": "^2.5.5",
+        "express": "^4.16.2",
+        "express-session": "^1.15.6",
+        "jsonfile": "^2.4.0",
+        "moment": "^2.18.1",
+        "mysql2": "^1.6.1",
+        "pug": "^2.0.3",
+        "sequelize": "^4.39.0"
+    }
+}
