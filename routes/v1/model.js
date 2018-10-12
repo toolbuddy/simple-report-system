@@ -21,12 +21,12 @@ router.use( '/report', (req,res)=>{
     })
 })
 
-router.use( '/fetch' , (req,res)=>{
+/*router.use( '/fetch' , (req,res)=>{
     db.fetch_error_entries((err,obj)=>{
         res.writeHead(200, {"Content-Type": "text/html; charset=utf-8"});
         res.end(JSON.stringify(obj))
     })
-})
+})*/
 
 
 
