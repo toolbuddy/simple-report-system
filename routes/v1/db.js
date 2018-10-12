@@ -1,12 +1,15 @@
 // primitive
+let crypto = require('crypto')
+const rs = require('randomstring')
 const Sequelize = require('sequelize')
 const moment = require("moment")
 const jsfs = require('jsonfile')
 const path = require('path')
 
+var dbconfig = jsfs.readFileSync(path.join(__dirname,'.dbconfig.json'));
+
 class db{
     constructor(){
-        var dbconfig = jsfs.readFileSync(path.join(__dirname,'.dbconfig.json'));
         const sequelize = new Sequelize(dbconfig.db_schema,dbconfig.db_username,dbconfig.db_userpasswd,{
             host: dbconfig.db_host,
             dialect: 'mysql',
@@ -27,7 +30,8 @@ class db{
 
         this.User = sequelize.define('users',{
             username: Sequelize.STRING,
-            passwd: Sequelize.STRING
+            passwd: Sequelize.STRING,
+            salt: Sequelize.STRING
         });
 
         this.Error = sequelize.define('errors',{
@@ -53,7 +57,60 @@ class db{
 
     // login by admin (to manipulate backend data)
     login(username, passwd, cb){
+        this.User.findOne({where: {username: username}}).then(userinfo => {
+            if(userinfo == null){
+                // not found
+                cb(1, {
+                    msg: "not found"
+                })
+            }
+            else {
+                // found one, return the message
+                // check the user's salt
+                if(crypto.pbkdf2Sync(passwd,userinfo.salt,100000,64,'sha512').toString('hex') == userinfo.passwd){
+                    cb(0,{
+                        msg: "success"
+                    });
+                }
+                else{
+                    cb(1,{
+                        msg: "wrong password"
+                    });
+                }
+            }
+        })
+    }
 
+    // register as admin 
+    register(username, passwd, secret, cb){
+        // admin authenticate
+        if(secret == dbconfig.secret_key){
+            this.User.findOne({where: {username: username}}).then(user=>{
+                if(user==null){
+                    // create for this user
+                    // TODO: need to pay for this key
+                    let key = rs.generate(16);
+        
+                    // Using crypto to implement hash and salt mechansim
+                    let product_key = crypto.pbkdf2Sync(passwd,key,100000,64,'sha512').toString('hex')
+                    // insert it into database
+                    this.User.create({
+                        username: username,
+                        passwd: product_key,
+                        salt: key
+                    })
+                    // return
+                    cb(0,{
+                        msg: "success"
+                    });
+                }
+                else{
+                    cb(1,{
+                        msg: "duplicated"
+                    });
+                }
+            })
+        }
     }
 
     add_error_entry(error, cb){

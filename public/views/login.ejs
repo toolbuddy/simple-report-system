@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- Title & Icon -->
+<title><%= title %></title>
+<link rel="icon" href="https://i.imgur.com/nfeMkGD.png">
+<% include ../elements/meta %>
+<% include ../elements/lib %>
+</head>
+<body>
+
+<div class="container font-fresca">
+	<!-- Purpose -->
+	<h2> <%= title %> </h2>
+	<hr>
+	<form id="login" method="POST" action="/user/login">
+		<div class="form-group">
+			<label for="account">Account:</label>
+			<input name="account" type="account" class="form-control" id="login-account" placeholder="F74012345 ...">
+		</div>
+		<div class="form-group">
+			<label for="password">Password:</label>
+			<input name="passwd" type="passwd" class="form-control" id="login-passwd" placeholder="...">
+		</div>
+		<div class="text-center center-block">
+			<button type="submit" class="btn btn-primary" value="login">Submit</button>
+			<button type="submit" class="btn btn-danger" value="back-register">Go to register</button>
+		</div>
+	
+	</form>
+	<!-- Register -->
+	<form id="register" method="POST" action="/user/register" hidden>
+		<div class="form-group">
+			<label for="account">Account:</label>
+			<input name="account" type="account" class="form-control" id="re-account" placeholder="F74012345 ...">
+		</div>
+		<div class="form-group">
+			<label for="password">Password:</label>
+			<input name="passwd" type="passwd" class="form-control" id="re-passwd" placeholder="...">
+		</div>
+		<div class="form-group">
+			<label for="secret_key">Secret Key:</label>
+			<input name="secret" type="secret" class="form-control" id="re-secret" placeholder="...">
+		</div>
+		<div class="text-center center-block">
+			<button type="submit" class="btn btn-primary" value="register">Register</button>
+			<button type="submit" class="btn btn-warning" value="back-login">Back to Login</button>
+		</div>
+	</form>
+</div>
+
+<script>
+$(document).on("click", ":submit", function(e){
+	// alert($(this).val());
+	var type = $(this).val()
+
+	switch(type){
+		case "login": 
+			// check emptyness
+			if($('#login-account').val().length == 0 || $('#login-passwd').val().length == 0){
+				alert("帳號、密碼不能為空")
+				e.preventDefault();
+				return false;
+			}
+			break;
+		case "register": 
+			// check emptyness
+			if($('#re-account').val().length == 0 || $('#re-passwd').val().length == 0 || $('#re-secret').val().length == 0){
+				alert("帳號、密碼、密鑰不能為空")
+				e.preventDefault();
+				return false;
+			}
+			break; 
+		case "back-login": 
+			$("#register").hide();
+			$("#login").show();
+			e.preventDefault()
+			return false
+			break; 
+		case "back-register": 
+			$("#register").show();
+			$("#login").hide();
+			e.preventDefault()
+			return false
+			break;
+	}
+});
+
+</script>
+
+<!-- Footer -->
+<hr>
+<br>
+<% include ../elements/normal_footer_bs %>
+</html>

@@ -2,7 +2,6 @@ const express = require( 'express' );
 const jsfs = require('jsonfile')
 const path = require('path')
 const router = new express.Router();
-
 const {db} = require('./db')
 
 router.use( '/report', (req,res)=>{
@@ -13,11 +12,13 @@ router.use( '/report', (req,res)=>{
         seat_id: req.query.ps
     }, (err,obj)=>{
         // return 
-        res.end(JSON.stringify(obj))
+        res.render('redirect.ejs',{
+            title: "Redirecting back to report page ...", 
+            msg: "成功登錄錯誤內容，感謝回報！",
+            duration: 2, 
+            url: "/api/v1"
+        })
     })
-})
-
-router.use( '/login' , (req,res)=>{
 })
 
 router.use( '/fetch' , (req,res)=>{
@@ -26,5 +27,7 @@ router.use( '/fetch' , (req,res)=>{
         res.end(JSON.stringify(obj))
     })
 })
+
+
 
 module.exports = router;

@@ -1,0 +1,49 @@
+<!-- User Management page -->
+<!DOCTYPE html>
+<html>
+<head>
+<!-- Title & Icon -->
+<title><%= title %></title>
+<link rel="icon" href="https://i.imgur.com/nfeMkGD.png">
+<% include ../elements/meta %>
+<% include ../elements/lib %>
+</head>
+<body>
+
+<div class="container font-fresca">
+	<!-- Purpose -->
+	<h2> <%= title %> </h2>
+    <hr>
+    <h3> <%= username %>， 歡迎使用簡易回報系統管理介面 </h3>
+    <hr>
+    <table class="table">
+        <thead>
+            <tr>
+            <th scope="col">#ID</th>
+            <th scope="col">Date</th>
+            <th scope="col">教室編號</th>
+            <th scope="col">座位號碼</th>
+            <th scope="col">發生問題</th>
+            <th scope="col">操作選項</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for(var index in error_entry){ %>
+                <tr>
+                <th scope="row"><%= error_entry[index].id %></th>
+                <td><%= error_entry[index].date %></td>
+                <td><%= error_entry[index].classroom_id %></td>
+                <td><%= error_entry[index].seat_id %></td>
+                <td><%= error_entry[index].problem_id %></td>
+                <td>*</td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+</div>
+
+<!-- Footer -->
+<hr>
+<br>
+<% include ../elements/normal_footer_bs %>
+</html>
