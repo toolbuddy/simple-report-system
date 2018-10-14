@@ -4,6 +4,7 @@
 <!-- Title & Icon -->
 <title><%= title %></title>
 <link rel="icon" href="https://i.imgur.com/nfeMkGD.png">
+<% include ../elements/nav %>
 <% include ../elements/meta %>
 <% include ../elements/lib %>
 </head>
@@ -20,6 +21,7 @@
 				<option selected>Choose...</option>
 				<option value="65304">65304</option>
 				<option value="65203">65203</option>
+				<option value="Other">Other</option>
 			</select>
 			<br>
 			<label for="problem_seat">發生問題的座位編號:</label>
@@ -39,9 +41,14 @@
 			</select>
 
 			<br>
-			<label id="extension" for="sed" hidden>例外問題回報內容（請填入你的問題）:</label>
+			<hr>
+			
+			<label id="extension-cr" for="sed" hidden>其他教室編號（請填入教室編號）:</label>
 			<input id="cr" name="cr" value="" hidden> 
+			<br>
+			<label id="extension" for="sed" hidden>例外問題回報內容（請填入你的問題）:</label>
 			<input id="pi" name="pi" value="" hidden>
+			<br>
 			<input id="ps" name="ps" value="" hidden>
 		</div>
 		
@@ -56,6 +63,16 @@ $('select#classroom').on('change', function(e){
               this.options[this.selectedIndex].value,
 			  $(this).find("option:selected").val(),);
 	$('#cr').attr('value', this.value)
+
+	if(this.value == "Other"){
+		$('#cr').attr('class','form-control')
+		$('#extension-cr').show()
+		$('#cr').show()
+	}
+	else{
+		$('#extension-cr').hide()
+		$('#cr').hide()
+	}
 });
 $('select#problem_id').on('change', function(e){
   	console.log(this.value,

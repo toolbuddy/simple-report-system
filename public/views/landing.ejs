@@ -1,0 +1,65 @@
+<!-- Landing page -->
+<!DOCTYPE html>
+<html>
+<head>
+<!-- Title & Icon -->
+<title><%= title %></title>
+<link rel="icon" href="https://i.imgur.com/nfeMkGD.png">
+<% include ../elements/nav %>
+<% include ../elements/meta %>
+<% include ../elements/lib %>
+</head>
+<body>
+
+<div class="container font-fresca">
+	<!-- Purpose -->
+	<h2> <%= title %> </h2>
+    <hr>
+    
+    <pre>目前仍使用變色龍還原卡
+希望有朝一日能夠使用 Ansible 來做管理
+卸載還原卡，給大家一個毫無負擔的系統環境 (,,・ω・,,)
+— by PC 助教</pre>
+    <br>
+    <div class="thumbnail">
+        <a href="https://i.imgur.com/TUto9iC.png">
+            <img src="https://i.imgur.com/TUto9iC.png" alt="landing" class="img-responsive">
+            <div class="caption">
+            <p>65304 電腦教室</p>
+            </div>
+        </a>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="thumbnail">
+                <img src="https://i.imgur.com/fAvdou5.png" alt="landing" class="img-responsive">
+                <div class="caption">
+                <p>65304 電腦教室</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="thumbnail">
+                <img src="https://i.imgur.com/5Vv9f8d.png" alt="landing" class="img-responsive">
+                <div class="caption">
+                <p>65304 電腦教室</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="thumbnail">
+                <img src="https://i.imgur.com/ylYvO4M.png" alt="landing" class="img-responsive">
+                <div class="caption">
+                <p>65304 電腦教室</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<hr>
+<br>
+<% include ../elements/normal_footer_bs %>
+</html>
