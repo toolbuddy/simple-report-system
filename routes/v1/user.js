@@ -15,10 +15,14 @@ router.use( '/login' , (req,res)=>{
         else{
             // login successful, go to mn.ejs
             db.fetch_error_entries((err,error_entry)=>{
-                res.render('mn.ejs', {
-                    title: "User Management Page",
-                    username: req.body.account,
-                    error_entry: error_entry
+                // fetch logger
+                db.fetch_logs((err,logs)=>{
+                    res.render('mn.ejs', {
+                        title: "User Management Page",
+                        username: req.body.account,
+                        error_entry: error_entry,
+                        log_entry: logs
+                    })
                 })
             })
         }

@@ -16,7 +16,11 @@
 	<h2> <%= title %> </h2>
     <hr>
     <h3> <%= username %>， 歡迎使用簡易回報系統管理介面 </h3>
+    <hr>
+    
     <input id="username" name="username" value="<%= username %>" hidden>
+
+    <h3> 待解決事項 </h3>
     <hr>
     <table class="table">
         <thead>
@@ -38,6 +42,33 @@
                 <td><%= error_entry[index].seat_id %></td>
                 <td><%= error_entry[index].problem_id %></td>
                 <td><button type="submit" class="btn btn-info" value="<%= error_entry[index].id %>">解決！</button></td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+
+    <hr>
+    <!-- Logger -->
+    <h3> 修繕日誌紀錄 </h3>
+    <hr>
+    <table class="table">
+        <thead>
+            <tr>
+            <th scope="col">處理者</th>
+            <th scope="col">Date</th>
+            <th scope="col">教室編號</th>
+            <th scope="col">座位號碼</th>
+            <th scope="col">發生問題</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for(var index in log_entry){ %>
+                <tr>
+                <th scope="row"><%= log_entry[index].solver_id %></th>
+                <td><%= log_entry[index].date %></td>
+                <td><%= log_entry[index].classroom_id %></td>
+                <td><%= log_entry[index].seat_id %></td>
+                <td><%= log_entry[index].problem_id %></td>
                 </tr>
             <% } %>
         </tbody>

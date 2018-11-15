@@ -2,9 +2,10 @@
 let crypto = require('crypto')
 const rs = require('randomstring')
 const Sequelize = require('sequelize')
-const moment = require("moment")
 const jsfs = require('jsonfile')
 const path = require('path')
+const moment = require("moment")
+moment.tz.setDefault("Asia/Taipei")
 
 var dbconfig = jsfs.readFileSync(path.join(__dirname,'.dbconfig.json'));
 
@@ -35,7 +36,15 @@ class db{
         });
 
         this.Error = sequelize.define('errors',{
-            date: Sequelize.DATE,
+            date: Sequelize.STRING,
+            classroom_id: Sequelize.STRING,
+            seat_id: Sequelize.STRING,
+            problem_id: Sequelize.CHAR(64)
+        })
+
+        this.Logger = sequelize.define('logs',{
+            solver_id: Sequelize.STRING,
+            date: Sequelize.STRING,
             classroom_id: Sequelize.STRING,
             seat_id: Sequelize.STRING,
             problem_id: Sequelize.CHAR(64)
@@ -137,19 +146,39 @@ class db{
         })
     }
 
+    // fetch all logs
+    fetch_logs(cb){
+        this.Logger.findAll().then( logs=>{
+            cb(0,logs)
+        })
+    }
+
     // del by solve 
     delete_solved_entry(id, solver_id, cb){
-        this.Error.destroy({where: {id: id}, cascade: false})
-            .then(affectedRows => {
-                // print out delete rows
-                console.log(affectedRows)
-                // using logger to log who modify the data
-
-                // return
-                cb(0, {msg: "deleted"})
-            }).catch((err)=>{
-                cb(1, {msg: "[delete] error code: "+err})
-            })
+        this.Error.findOne({where: {id: id}}).then(error=>{
+            this.Error.destroy({where: {id: id}, cascade: false})
+                .then(affectedRows => {
+                    // using logger to log who modify the data
+                    this.Logger.create({
+                        solver_id: solver_id,
+                        date: moment().format(),
+                        classroom_id: error.classroom_id,
+                        seat_id: error.seat_id,
+                        problem_id: error.problem_id
+                    }).then(()=>{
+                        // return
+                        cb(0, {msg: "deleted"})
+                    }).catch(err=>{
+                        // return
+                        cb(1, {msg: "[delete] error code: "+err})
+                    })
+                }).catch((err)=>{
+                    cb(1, {msg: "[delete] error code: "+err})
+                })
+        }).catch(err=>{
+            cb(1, {msg: "[delete] error code: "+err})
+        })
+        
     }
 }
 
