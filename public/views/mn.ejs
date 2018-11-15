@@ -16,6 +16,7 @@
 	<h2> <%= title %> </h2>
     <hr>
     <h3> <%= username %>， 歡迎使用簡易回報系統管理介面 </h3>
+    <input id="username" name="username" value="<%= username %>" hidden>
     <hr>
     <table class="table">
         <thead>
@@ -28,7 +29,7 @@
             <th scope="col">操作選項</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="problem_list">
             <% for(var index in error_entry){ %>
                 <tr>
                 <th scope="row"><%= error_entry[index].id %></th>
@@ -36,7 +37,7 @@
                 <td><%= error_entry[index].classroom_id %></td>
                 <td><%= error_entry[index].seat_id %></td>
                 <td><%= error_entry[index].problem_id %></td>
-                <td>*</td>
+                <td><button type="submit" class="btn btn-info" value="<%= error_entry[index].id %>">解決！</button></td>
                 </tr>
             <% } %>
         </tbody>
@@ -47,4 +48,75 @@
 <hr>
 <br>
 <% include ../elements/normal_footer_bs %>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
+<script>
+var socket = io();
+
+$(document).on("click", ":submit", function(e){
+    var problem_id = $(this).val()
+    var solver_id = $('#username').val()
+    // using socket.io to send message back to server, and use the returing message to re-render the table
+    socket.emit('solve', {
+        problem_id, solver_id
+    });
+
+	e.preventDefault();
+});
+
+function build_tbody_elem(elem){
+    var problem_list = $('#problem_list')
+    // tr
+    var row = document.createElement("tr")
+    // id 
+    var id = document.createElement("td")
+    var idtxt = document.createTextNode(elem.id)
+    id.appendChild(idtxt)
+    row.appendChild(id)
+    // date
+    var date = document.createElement("td")
+    var datetxt = document.createTextNode(elem.date)
+    date.appendChild(datetxt)
+    row.appendChild(date)
+    // classroom id 
+    var cid = document.createElement("td")
+    var cidtxt = document.createTextNode(elem.classroom_id)
+    cid.appendChild(cidtxt)
+    row.appendChild(cid)
+    // seat id 
+    var sid = document.createElement("td")
+    var sidtxt = document.createTextNode(elem.seat_id)
+    sid.appendChild(sidtxt)
+    row.appendChild(sid)
+    // problem id
+    var pid = document.createElement("td")
+    var pidtxt = document.createTextNode(elem.problem_id)
+    pid.appendChild(pidtxt)
+    row.appendChild(pid)
+    // button 
+    var btntd = document.createElement("td")
+    var btn = document.createElement("BUTTON");
+    btn.type = "submit"
+    btn.className = "btn btn-info"
+    btn.value = elem.id
+    var t = document.createTextNode("解決！");
+    btn.appendChild(t);
+    btntd.appendChild(btn)
+    row.appendChild(btntd)
+    // append into problem_list
+    problem_list.append(row)
+}
+
+// replot the table
+socket.on('replot', function(msg){
+    var problem_list = $('#problem_list')
+    problem_list.empty()
+    // base on msg to re-construct table
+    for(var i in msg){
+        build_tbody_elem(msg[i])
+    }
+});
+
+</script>
+
 </html>

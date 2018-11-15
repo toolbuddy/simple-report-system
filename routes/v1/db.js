@@ -136,6 +136,21 @@ class db{
             cb(0,errors)
         })
     }
+
+    // del by solve 
+    delete_solved_entry(id, solver_id, cb){
+        this.Error.destroy({where: {id: id}, cascade: false})
+            .then(affectedRows => {
+                // print out delete rows
+                console.log(affectedRows)
+                // using logger to log who modify the data
+
+                // return
+                cb(0, {msg: "deleted"})
+            }).catch((err)=>{
+                cb(1, {msg: "[delete] error code: "+err})
+            })
+    }
 }
 
 module.exports = {
