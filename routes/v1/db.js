@@ -50,6 +50,13 @@ class db{
             problem_id: Sequelize.CHAR(64)
         })
 
+        this.Changelog = sequelize.define('changelogs',{
+            commit: Sequelize.STRING,
+            date: Sequelize.STRING,
+            author: Sequelize.STRING,
+            msg: Sequelize.CHAR(255)
+        })
+
         // test connection
         sequelize
             .authenticate()
@@ -127,6 +134,55 @@ class db{
         }
     }
 
+    /** 
+     * Changelog
+     * 
+     */
+    store_changelog(commits){
+        return new Promise((resolve, reject)=>{
+            this.Changelog.findOne({where: {commit: commits.commit}})
+                .then((commit)=>{
+                    if(commit==null){
+                        // create commit
+                        // insert it into database
+                        this.Changelog.create({
+                            commit: commits.commit,
+                            date: commits.date.toString(),
+                            msg: commits.msg,
+                            author: commits.author
+                        })
+                        // return 
+                        resolve({msg: "finished"})
+                    }
+                    else{
+                        resolve({msg: "duplicated"})
+                    }
+                })
+            })
+    }
+
+    fetch_changelog(cb){
+        this.Changelog.findAll().then( commits=>{
+            cb(0,commits)
+        })
+    }
+
+    /**
+     * Logger
+     * 
+     */
+    // fetch all logs
+    fetch_logs(cb){
+        this.Logger.findAll().then( logs=>{
+            cb(0,logs)
+        })
+    }    
+
+    /**
+     * Dealing with Error Schema
+     *
+     */
+
     add_error_entry(error, cb){
         this.Error.create({
             date: moment().format(),
@@ -148,13 +204,6 @@ class db{
     fetch_error_entries(cb){
         this.Error.findAll().then( errors=>{
             cb(0,errors)
-        })
-    }
-
-    // fetch all logs
-    fetch_logs(cb){
-        this.Logger.findAll().then( logs=>{
-            cb(0,logs)
         })
     }
 

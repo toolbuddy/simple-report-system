@@ -9,7 +9,7 @@
         "build": "npm install",
         "start": "node app.js",
         "all": "npm run build && npm run start",
-        "deploy": "cp -R .git routes/v1/.git/ && git push heroku master"
+        "deploy": "git push heroku master"
     },
     "license": "GPL-3.0",
     "dependencies": {

@@ -7,6 +7,11 @@ const user = require('./v1/user')
 const {db} = require('./v1/db')
 const {changelog} = require('./v1/changelog')
 
+// running by developer only (cause heroku can't access .git/ folder)
+setTimeout(()=>{
+    changelog.sync_with_db()
+}, 5000)
+
 router.use('/', model)
 router.use('/user', user)
 router.use('/api/v1',v1);
@@ -15,10 +20,23 @@ router.use('/api/v1',v1);
  * Some static page
  */
 router.use('/changelog', function(req,res){
-    res.render('changelog.ejs',{
-        title: "更新日誌",
-        changelog: changelog.get_changelog()
+    changelog.get_changelog((err, commits)=>{
+        if(err){
+            // error 
+            res.render('error.ejs', {
+                title: 404,
+                msg: "獲取 Changelog 失敗",
+                code: "unknown errors."
+            })
+        }
+        else{
+            res.render('changelog.ejs',{
+                title: "更新日誌",
+                changelog: commits
+            })
+        }
     })
+    
 })
 
 router.use('/log', function(req,res){
