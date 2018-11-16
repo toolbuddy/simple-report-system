@@ -72,7 +72,6 @@
             <th scope="col">教室編號</th>
             <th scope="col">座位號碼</th>
             <th scope="col">發生問題</th>
-            <th scope="col">操作選項</th>
             </tr>
         </thead>
         <tbody id="problem_list">
@@ -83,7 +82,6 @@
                 <td><%= error_entry[index].classroom_id %></td>
                 <td><%= error_entry[index].seat_id %></td>
                 <td><%= error_entry[index].problem_id %></td>
-                <td><button type="submit" class="btn btn-info" value="<%= error_entry[index].id %>">解決！</button></td>
                 </tr>
             <% } %>
         </tbody>
