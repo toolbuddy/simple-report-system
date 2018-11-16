@@ -21,7 +21,7 @@ router.use( '/login' , (req,res)=>{
                 // fetch logger
                 db.fetch_logs((err,logs)=>{
                     res.render('mn.ejs', {
-                        title: "User Management Page",
+                        title: "管理員使用介面",
                         username: req.body.account,
                         error_entry: error_entry,
                         log_entry: logs
