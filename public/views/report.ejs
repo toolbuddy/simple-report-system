@@ -28,8 +28,11 @@
 			<select class="form-control" id="problem_seat">
 				<option selected>Choose...</option>
 				<% for(var i=0; i <= 130; i++){ %>
-					<option value="<%= i %>"><%= i %></option>
-				<% } %>
+					<% if(i == 0){%>
+						<option value="<%= i %>: 數位講桌電腦"><%= i %>: 數位講桌電腦</option>
+					<% }else{%>
+						<option value="<%= i %>"><%= i %></option>
+				<% }} %>
 			</select>
 			<br>
 			<label for="problem_id">問題回報類型:</label>

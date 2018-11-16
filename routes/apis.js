@@ -21,6 +21,11 @@ router.use('/api/v1',v1);
  */
 router.use('/changelog', function(req,res){
     changelog.get_changelog((err, commits)=>{
+        // sorting commits
+        commits.sort(function(a,b){
+            return new Date(b.date) - new Date(a.date);
+        });
+
         if(err){
             // error 
             res.render('error.ejs', {
