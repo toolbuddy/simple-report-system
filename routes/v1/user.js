@@ -7,11 +7,14 @@ const {db} = require('./db')
 
 router.use( '/login' , (req,res)=>{
     // POST method
-    console.log(req.body)
-
     db.login(req.body.account, req.body.passwd, (err, obj)=>{
-        if(err)
-            res.end(JSON.stringify(obj))
+        if(err){
+            res.render('error.ejs', {
+                title: 404,
+                msg: "使用者登入失敗",
+                code: obj.msg
+            })
+        }
         else{
             // login successful, go to mn.ejs
             db.fetch_error_entries((err,error_entry)=>{
@@ -31,11 +34,14 @@ router.use( '/login' , (req,res)=>{
 
 router.use( '/register' , (req,res)=>{
     // POST method
-    console.log(req.body)
-
     db.register(req.body.account, req.body.passwd, req.body.secret, (err, obj)=>{
-        if(err)
-            res.end(JSON.stringify(obj))
+        if(err){
+            res.render('error.ejs', {
+                title: 404,
+                msg: "使用者註冊失敗",
+                code: obj.msg
+            })
+        }
         else{
             // login successful, go to redirect.ejs
             res.render('redirect.ejs',{

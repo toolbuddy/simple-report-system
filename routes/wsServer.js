@@ -28,8 +28,6 @@ class wsServer {
                             // error occur
                             console.log(obj)
                         }
-                        // console.log(obj)
-
                         // fetch the data , and send back to client
                         db.fetch_error_entries((err,errors)=>{
                             socket.emit('replot', errors)

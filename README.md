@@ -31,5 +31,9 @@ Simple report system for PC classroom, let user easily report problems to admin.
 ```
 * **若有興趣一起維護成大資訊的這個 heroku distribution**，歡迎寄信給我 (kevinbird61@gmail.com) 來索取 `.dbconfig.json` 設定檔！
 
+## Misc
+
+* [Heroku 上部署的一二事](https://hackmd.io/ZnghTqgHR4qRDU1_MlE07Q)
+
 # Author 
 * Kevin Cyu, kevinbird61@gmail.com

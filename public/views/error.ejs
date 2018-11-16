@@ -1,0 +1,30 @@
+<!-- Display redirect page, with specify message -->
+<!DOCTYPE html>
+<html>
+<head>
+<!-- Title & Icon -->
+<title><%= title %></title>
+<link rel="icon" href="https://i.imgur.com/nfeMkGD.png">
+<% include ../elements/nav %>
+<% include ../elements/meta %>
+<% include ../elements/lib %>
+</head>
+<body>
+
+<div class="container font-fresca">
+	<!-- Purpose -->
+	<h2> <%= title %> </h2>
+	<hr>
+    <h1> <%= msg %> </h1>
+    <hr>
+    <pre> <%= code %> </pre>
+</div>
+
+<script>
+</script>
+
+<!-- Footer -->
+<hr>
+<br>
+<% include ../elements/normal_footer_bs %>
+</html>

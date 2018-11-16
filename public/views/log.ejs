@@ -1,0 +1,50 @@
+<!-- User Management page -->
+<!DOCTYPE html>
+<html>
+<head>
+<!-- Title & Icon -->
+<title><%= title %></title>
+<link rel="icon" href="https://i.imgur.com/nfeMkGD.png">
+<% include ../elements/nav %>
+<% include ../elements/meta %>
+<% include ../elements/lib %>
+</head>
+<body>
+
+<div class="container font-fresca">
+	<!-- Purpose -->
+	<h2> <%= title %> </h2>
+    <hr>
+    <table class="table">
+        <thead>
+            <tr>
+            <th scope="col">處理者</th>
+            <th scope="col">Date</th>
+            <th scope="col">教室編號</th>
+            <th scope="col">座位號碼</th>
+            <th scope="col">發生問題</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for(var index in log_entry){ %>
+                <tr>
+                <th scope="row"><%= log_entry[index].solver_id %></th>
+                <td><%= log_entry[index].date %></td>
+                <td><%= log_entry[index].classroom_id %></td>
+                <td><%= log_entry[index].seat_id %></td>
+                <td><%= log_entry[index].problem_id %></td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+</div>
+
+<!-- Footer -->
+<hr>
+<br>
+<% include ../elements/normal_footer_bs %>
+<script>
+
+</script>
+
+</html>

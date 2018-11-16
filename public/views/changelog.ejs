@@ -1,0 +1,48 @@
+<!-- User Management page -->
+<!DOCTYPE html>
+<html>
+<head>
+<!-- Title & Icon -->
+<title><%= title %></title>
+<link rel="icon" href="https://i.imgur.com/nfeMkGD.png">
+<% include ../elements/nav %>
+<% include ../elements/meta %>
+<% include ../elements/lib %>
+</head>
+<body>
+
+<div class="container font-fresca">
+	<!-- Purpose -->
+	<h2> <%= title %> </h2>
+    <hr>
+    <h3> 專案提交紀錄 </h3>
+    <hr>
+    <table class="table">
+        <thead>
+            <tr class="w-100">
+            <th scope="col"><button class="btn btn-primary w-100">Date</button></th>
+            <th scope="col"><button class="btn btn-danger w-100">Commit logs</button></th>
+            <th scope="col"><button class="btn btn-primary w-100">Author</button></th>
+            </tr>
+        </thead>
+        <tbody>
+            <% for(var index in changelog){ %>
+                <tr>
+                <th scope="row"><%= changelog[index].date %></th>
+                <td><%= changelog[index].msg %></td>
+                <td><%= changelog[index].author %></td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+</div>
+
+<!-- Footer -->
+<hr>
+<br>
+<% include ../elements/normal_footer_bs %>
+
+<script>
+</script>
+
+</html>

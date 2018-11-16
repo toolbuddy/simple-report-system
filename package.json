@@ -20,6 +20,7 @@
         "jsonfile": "^2.4.0",
         "moment": "^2.18.1",
         "mysql2": "^1.6.1",
+        "nodegit": "^0.23.0",
         "pug": "^2.0.3",
         "randomstring": "^1.1.5",
         "sequelize": "^4.39.0",

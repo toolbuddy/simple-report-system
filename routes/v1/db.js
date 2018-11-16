@@ -120,6 +120,11 @@ class db{
                 }
             })
         }
+        else{
+            cb(1, {
+                msg: "認証碼錯誤"
+            })
+        }
     }
 
     add_error_entry(error, cb){
