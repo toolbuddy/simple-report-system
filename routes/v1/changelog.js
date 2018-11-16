@@ -14,7 +14,7 @@ class changelog{
     init(){
         // fetch changelog 
         let self=this
-        nodegit.Repository.open(path.resolve(__dirname, "../../.git"))
+        nodegit.Repository.open(path.resolve(__dirname, ".git"))
             .then(function(repo) {
                 return repo.getMasterCommit();
             })
