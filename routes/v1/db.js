@@ -42,12 +42,35 @@ class db{
             problem_id: Sequelize.CHAR(64)
         })
 
+        this.Delivery = sequelize.define('deliveries',{
+            date: Sequelize.STRING,
+            classroom_id: Sequelize.STRING,
+            software_name: Sequelize.STRING,
+            type: Sequelize.STRING,
+            os: Sequelize.STRING,
+            requirements: Sequelize.STRING(4096),
+            duration: Sequelize.INTEGER,
+            requester: Sequelize.STRING
+        })
+
         this.Logger = sequelize.define('logs',{
             solver_id: Sequelize.STRING,
             date: Sequelize.STRING,
             classroom_id: Sequelize.STRING,
             seat_id: Sequelize.STRING,
             problem_id: Sequelize.CHAR(64)
+        })
+
+        this.DeliverLogger = sequelize.define('deliverlogs',{
+            solver_id: Sequelize.STRING,
+            date: Sequelize.STRING,
+            classroom_id: Sequelize.STRING,
+            software_name: Sequelize.STRING,
+            type: Sequelize.STRING,
+            os: Sequelize.STRING,
+            requirements: Sequelize.STRING(4096),
+            duration: Sequelize.INTEGER,
+            requester: Sequelize.STRING
         })
 
         this.Changelog = sequelize.define('changelogs',{
@@ -176,7 +199,69 @@ class db{
         this.Logger.findAll().then( logs=>{
             cb(0,logs)
         })
-    }    
+    }
+
+    fetch_deliver_logs(cb){
+        this.DeliverLogger.findAll().then( logs=>{
+            cb(0,logs)
+        })
+    }
+
+    /** 
+     * Software Deliver Request
+     */
+    add_deliver_request(request, cb){
+        // TODO
+        this.Delivery.create({
+            date: moment().format(),
+            classroom_id: request.classroom_id,
+            software_name: request.software_name,
+            type: request.type,
+            os: request.os,
+            requirements: request.requirements,
+            duration: request.duration,
+            requester: request.requester
+        })
+        cb(0,{
+            msg: "new"
+        })
+    }
+
+    delete_deliver_request(id, solver_id, cb){
+        this.Delivery.findOne({where: {id: id}}).then(request=>{
+            this.Delivery.destroy({where: {id: id}, cascade: false})
+                .then(affectedRows => {
+                    // using logger to log who modify the data
+                    this.DeliverLogger.create({
+                        solver_id: solver_id,
+                        date: moment().format(),
+                        classroom_id: request.classroom_id,
+                        software_name: request.software_name,
+                        type: request.type,
+                        os: request.os,
+                        requirements: request.requirements,
+                        duration: request.duration,
+                        requester: request.requester
+                    }).then(()=>{
+                        // return
+                        cb(0, {msg: "deleted"})
+                    }).catch(err=>{
+                        // return
+                        cb(1, {msg: "[delete] error code: "+err})
+                    })
+                }).catch((err)=>{
+                    cb(1, {msg: "[delete] error code: "+err})
+                })
+        }).catch(err=>{
+            cb(1, {msg: "[delete] error code: "+err})
+        })
+    }
+
+    fetch_deliver_request(cb){
+        this.Delivery.findAll().then( requests=>{
+            cb(0, requests)
+        })
+    }
 
     /**
      * Dealing with Error Schema

@@ -20,7 +20,7 @@
     
     <input id="username" name="username" value="<%= username %>" hidden>
 
-    <h3> 待解決事項 </h3>
+    <h3> <span class="glyphicon glyphicon-tasks"></span> 待解決事項 </h3>
     <hr>
     <table class="table">
         <thead>
@@ -41,15 +41,52 @@
                 <td><%= error_entry[index].classroom_id %></td>
                 <td><%= error_entry[index].seat_id %></td>
                 <td><%= error_entry[index].problem_id %></td>
-                <td><button type="submit" class="btn btn-info" value="<%= error_entry[index].id %>">解決！</button></td>
+                <td><button type="submit" class="btn btn-info" value="problem:<%= error_entry[index].id %>">解決！</button></td>
                 </tr>
             <% } %>
         </tbody>
     </table>
 
+    <!-- Delivery queue -->
+    <hr>
+	<h3> <span class="glyphicon glyphicon-tasks"></span> 待派送的任務排程： </h3>
+    <hr>
+    <table class="table">
+        <thead>
+            <tr>
+            <th scope="col">#ID</th>
+            <th scope="col">指派日期</th>
+            <th scope="col">教室</th>
+            <th scope="col">派送軟體</th>
+            <th scope="col">派送需求</th>
+            <th scope="col">作業系統</th>
+            <th scope="col">備註</th>
+            <th scope="col">期望完成日期</th>
+            <th scope="col">任務指派者</th>
+            <th scope="col">操作選項</th>
+            </tr>
+        </thead>
+        <tbody id="request_list">
+            <% for(var index in request_list){ %>
+                <tr>
+                <th scope="row"><%= request_list[index].id %></th>
+                <td><%= request_list[index].date %></td>
+                <td><%= request_list[index].classroom_id %></td>
+                <td><%= request_list[index].software_name %></td>
+                <td><%= request_list[index].type %></td>
+                <td><%= request_list[index].os %></td>
+                <td><%= request_list[index].requirements %></td>
+                <td><%= request_list[index].duration %></td>
+                <td><%= request_list[index].requester %></td>
+                <td><button type="submit" class="btn btn-info" value="request:<%= request_list[index].id %>">解決！</button></td>
+                </tr>
+            <% } %>
+        </tbody>
+	</table>
+
     <hr>
     <!-- Logger -->
-    <h3> 修繕日誌紀錄 </h3>
+    <h3> <span class="glyphicon glyphicon-paperclip"></span> 修繕日誌紀錄 </h3>
     <hr>
     <table class="table">
         <thead>
@@ -73,6 +110,41 @@
             <% } %>
         </tbody>
     </table>
+
+    <hr>
+    <!-- Logger -->
+    <h3> <span class="glyphicon glyphicon-paperclip"></span> 派送日誌紀錄 </h3>
+    <hr>
+    <table class="table">
+        <thead>
+            <tr>
+            <th scope="col">處理者</th>
+            <th scope="col">指派日期</th>
+            <th scope="col">教室</th>
+            <th scope="col">派送軟體</th>
+            <th scope="col">派送需求</th>
+            <th scope="col">作業系統</th>
+            <th scope="col">備註</th>
+            <th scope="col">期望完成日期</th>
+            <th scope="col">任務指派者</th>
+            </tr>
+        </thead>
+        <tbody id="request_list">
+            <% for(var index in finished_request_list){ %>
+                <tr>
+                <th scope="row"><%= finished_request_list[index].solver_id %></th>
+                <td><%= finished_request_list[index].date %></td>
+                <td><%= finished_request_list[index].classroom_id %></td>
+                <td><%= finished_request_list[index].software_name %></td>
+                <td><%= finished_request_list[index].type %></td>
+                <td><%= finished_request_list[index].os %></td>
+                <td><%= finished_request_list[index].requirements %></td>
+                <td><%= finished_request_list[index].duration %></td>
+                <td><%= finished_request_list[index].requester %></td>
+                </tr>
+            <% } %>
+        </tbody>
+	</table>
 </div>
 
 <!-- Footer -->
@@ -85,12 +157,19 @@
 var socket = io();
 
 $(document).on("click", ":submit", function(e){
-    var problem_id = $(this).val()
+    var problem_type = $(this).val().split(":")[0]
+    var problem_id = $(this).val().split(":")[1]
     var solver_id = $('#username').val()
     // using socket.io to send message back to server, and use the returing message to re-render the table
-    socket.emit('solve', {
-        problem_id, solver_id
-    });
+    if(problem_type=="problem"){
+        socket.emit('solve', {
+            problem_id, solver_id
+        });
+    } else {
+        socket.emit('finish', {
+            problem_id, solver_id
+        });
+    }
 
 	e.preventDefault();
 });
@@ -138,6 +217,69 @@ function build_tbody_elem(elem){
     problem_list.append(row)
 }
 
+function build_tbody_elem_request(elem){
+    var request_list = $('#request_list')
+    // tr
+    var row = document.createElement("tr")
+    // id 
+    var id = document.createElement("td")
+    var idtxt = document.createTextNode(elem.id)
+    id.appendChild(idtxt)
+    row.appendChild(id)
+    // date
+    var date = document.createElement("td")
+    var datetxt = document.createTextNode(elem.date)
+    date.appendChild(datetxt)
+    row.appendChild(date)
+    // classroom id 
+    var cid = document.createElement("td")
+    var cidtxt = document.createTextNode(elem.classroom_id)
+    cid.appendChild(cidtxt)
+    row.appendChild(cid)
+    // software name
+    var swname = document.createElement("td")
+    var swtext = document.createTextNode(elem.software_name)
+    swname.appendChild(swtext)
+    row.appendChild(swname)
+    // type
+    var type = document.createElement("td")
+    var typetxt = document.createTextNode(elem.type)
+    type.appendChild(typetxt)
+    row.appendChild(type)
+    // os
+    var os = document.createElement("td")
+    var ostxt = document.createTextNode(elem.os)
+    os.appendChild(ostxt)
+    row.appendChild(os)
+    // requirement
+    var requirement = document.createElement("td")
+    var requirementtxt = document.createTextNode(elem.requirements)
+    requirement.appendChild(requirementtxt)
+    row.appendChild(requirement)
+    // duration
+    var duration = document.createElement("td")
+    var durationtxt = document.createTextNode(elem.duration)
+    duration.appendChild(durationtxt)
+    row.appendChild(duration)
+    // requester
+    var requester = document.createElement("td")
+    var requestertxt = document.createTextNode(elem.requester)
+    requester.appendChild(requestertxt)
+    row.appendChild(requester)
+    // button 
+    var btntd = document.createElement("td")
+    var btn = document.createElement("BUTTON");
+    btn.type = "submit"
+    btn.className = "btn btn-info"
+    btn.value = elem.id
+    var t = document.createTextNode("解決！");
+    btn.appendChild(t);
+    btntd.appendChild(btn)
+    row.appendChild(btntd)
+    // append into problem_list
+    request_list.append(row)
+}
+
 // replot the table
 socket.on('replot', function(msg){
     var problem_list = $('#problem_list')
@@ -145,6 +287,16 @@ socket.on('replot', function(msg){
     // base on msg to re-construct table
     for(var i in msg){
         build_tbody_elem(msg[i])
+    }
+});
+
+// replot the table (request list)
+socket.on('replot-request', function(msg){
+    var request_list = $('#request_list')
+    request_list.empty()
+    // base on msg to re-construct table
+    for(var i in msg){
+        build_tbody_elem_request(msg[i])
     }
 });
 

@@ -5,6 +5,7 @@ const router = new express.Router();
 
 const {db} = require('./db')
 
+// for maintainer login and the continuous manage
 router.use( '/login', (req,res)=>{
     // manage page 
     res.render("login.ejs", {
@@ -12,7 +13,19 @@ router.use( '/login', (req,res)=>{
     })
 })
 
-router.use( '/', (req,res)=>{
+// software delivery request page
+router.use( '/delivery', (req,res)=>{
+    // delivery request page
+    db.fetch_deliver_request((err,requests)=>{
+        res.render("delivery.ejs", {
+            title: "成功大學資訊系 - 電腦教室軟體派送請求", 
+            request_list: requests
+        })
+    })
+})
+
+// main report page
+router.use( '/reporter', (req,res)=>{
     var problem_list = jsfs.readFileSync(path.join(__dirname,'problem.json'));
     // report page
     db.fetch_error_entries((err,objs)=>{

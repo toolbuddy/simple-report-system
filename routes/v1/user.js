@@ -20,11 +20,18 @@ router.use( '/login' , (req,res)=>{
             db.fetch_error_entries((err,error_entry)=>{
                 // fetch logger
                 db.fetch_logs((err,logs)=>{
-                    res.render('mn.ejs', {
-                        title: "管理員使用介面",
-                        username: req.body.account,
-                        error_entry: error_entry,
-                        log_entry: logs
+                    db.fetch_deliver_request((err,requests)=>{
+                        // fetch deliver logger
+                        db.fetch_deliver_logs((err,deliver_logs)=>{
+                            res.render('mn.ejs', {
+                                title: "管理員使用介面",
+                                username: req.body.account,
+                                error_entry: error_entry,
+                                request_list: requests,
+                                log_entry: logs,
+                                finished_request_list: deliver_logs
+                            })
+                        })
                     })
                 })
             })

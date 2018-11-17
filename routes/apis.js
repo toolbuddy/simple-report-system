@@ -47,9 +47,12 @@ router.use('/changelog', function(req,res){
 router.use('/log', function(req,res){
     // fetch logger
     db.fetch_logs((err,logs)=>{
-        res.render('log.ejs',{
-            title: "修繕日誌",
-            log_entry: logs
+        db.fetch_deliver_logs((err,deliver_logs)=>{
+            res.render('log.ejs',{
+                title: "PC 助教 の 日誌",
+                finished_request_list: deliver_logs,
+                log_entry: logs
+            })
         })
     })
 })

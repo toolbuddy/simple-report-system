@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- Title & Icon -->
+<title><%= title %></title>
+<link rel="icon" href="https://i.imgur.com/nfeMkGD.png">
+<% include ../elements/nav %>
+<% include ../elements/meta %>
+<% include ../elements/lib %>
+</head>
+<body>
+
+<div class="container font-fresca">
+	<!-- Purpose -->
+	<h2> <%= title %> </h2>
+	<hr>
+	<h3> 申請派送軟體： </h3>
+    <hr>
+	<form id="delivery" method="GET" action="/deliver">
+		<div class="form-group">
+            <br>
+                <label for="cr">派送目標教室編號:</label>
+                <select class="form-control" id="classroom">
+                    <option selected>Choose...</option>
+                    <option value="65304">65304</option>
+                    <option value="65203">65203</option>
+                    <option value="Other">Other</option>
+                </select>
+            <br>
+            <hr>
+
+            <label for="software-name">想要派送的軟體名稱:</label>
+            <input id="software_name" class="form-control" name="software_name" value="" placeholder="e.g. MATLAB 2018a">
+            <br>
+
+            <label for="type">派送需求或原因:</label>
+            <input id="type" class="form-control" name="type" value="" placeholder="e.g. 暑期課程需求、C++ 程式設計 demo 需求">
+            <br>
+
+            <label for="os">派送到的作業系統:</label>
+            <input id="os" class="form-control" name="os" value="" placeholder="e.g. Windows, Linux">
+            <br>
+
+            <label for="requirements">附註說明（額外派送時的說明）:</label>
+            <input id="requirements" class="form-control" name="requirements" value="" placeholder="e.g. 可以額外幫忙設定 ... blablabla">
+            <br>
+
+            <label for="duration">期望能在幾天內完成:</label>
+            <input id="duration" class="form-control" name="duration" value="" placeholder="e.g. 10">
+            <br>
+
+            <label for="requester">請輸入你的單位:</label>
+            <input id="requester" class="form-control" name="requester" value="" placeholder="e.g. 蔡孟勳老師實驗室">
+            <br>
+            <hr>
+            
+            <label id="extension-cr" for="sed" hidden>其他教室編號（請填入教室編號）:</label>
+			<input id="cr" name="cr" value="" hidden> 
+		</div>
+		
+		
+	<button type="submit" class="btn btn-primary center-block">提交</button>
+	</form>
+
+	<hr>
+	<h3> 已登錄的派送任務排程： </h3>
+    <hr>
+    <table class="table">
+        <thead>
+            <tr>
+            <th scope="col">#ID</th>
+            <th scope="col">指派日期</th>
+            <th scope="col">教室</th>
+            <th scope="col">派送軟體</th>
+            <th scope="col">派送需求</th>
+            <th scope="col">作業系統</th>
+            <th scope="col">備註</th>
+            <th scope="col">期望完成日期</th>
+            <th scope="col">任務指派者</th>
+            </tr>
+        </thead>
+        <tbody id="request_list">
+            <% for(var index in request_list){ %>
+                <tr>
+                <th scope="row"><%= request_list[index].id %></th>
+                <td><%= request_list[index].date %></td>
+                <td><%= request_list[index].classroom_id %></td>
+                <td><%= request_list[index].software_name %></td>
+                <td><%= request_list[index].type %></td>
+                <td><%= request_list[index].os %></td>
+                <td><%= request_list[index].requirements %></td>
+                <td><%= request_list[index].duration %></td>
+                <td><%= request_list[index].requester %></td>
+                </tr>
+            <% } %>
+        </tbody>
+	</table>
+	<hr>
+</div>
+
+<script>
+$('select#classroom').on('change', function(e){
+	console.log(this.value,
+              this.options[this.selectedIndex].value,
+			  $(this).find("option:selected").val(),);
+	$('#cr').attr('value', this.value)
+
+	if(this.value == "Other"){
+		$('#cr').attr('class','form-control')
+		$('#extension-cr').show()
+		$('#cr').show()
+	}
+	else{
+		$('#extension-cr').hide()
+		$('#cr').hide()
+	}
+});
+
+$('#delivery').submit(function(e){
+	if($('#cr').val() == 'Choose...' || $('#cr').val().length == 0){
+		alert('請輸入 "教室編號" ！');
+		e.preventDefault();
+		return false;
+	}
+	if($('#software_name').val().length == 0){
+		alert('請輸入 "派送軟體名稱" ！');
+		e.preventDefault();
+		return false;
+	}
+	if($('#type').val().length == 0){
+		alert('請輸入 "派送原因" ！');
+		e.preventDefault();
+		return false;
+    }
+    if($('#os').val().length == 0){
+		alert('請輸入 "作業系統" ！');
+		e.preventDefault();
+		return false;
+    }
+    if($('#duration').val().length == 0){
+		alert('請輸入 "期望能在幾天完成" ！');
+		e.preventDefault();
+		return false;
+    }
+    if($('#requester').val().length == 0){
+		alert('請輸入 "你的單位" ！');
+		e.preventDefault();
+		return false;
+    }
+})
+</script>
+
+<!-- Footer -->
+<hr>
+<br>
+<% include ../elements/normal_footer_bs %>
+</html>
