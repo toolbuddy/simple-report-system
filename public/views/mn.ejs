@@ -208,7 +208,7 @@ function build_tbody_elem(elem){
     var btn = document.createElement("BUTTON");
     btn.type = "submit"
     btn.className = "btn btn-info"
-    btn.value = elem.id
+    btn.value = "problem:" + elem.id
     var t = document.createTextNode("解決！");
     btn.appendChild(t);
     btntd.appendChild(btn)
@@ -271,7 +271,7 @@ function build_tbody_elem_request(elem){
     var btn = document.createElement("BUTTON");
     btn.type = "submit"
     btn.className = "btn btn-info"
-    btn.value = elem.id
+    btn.value = "request:" + elem.id
     var t = document.createTextNode("解決！");
     btn.appendChild(t);
     btntd.appendChild(btn)
