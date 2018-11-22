@@ -6,11 +6,13 @@ Simple report system for PC classroom, let user easily report problems to admin.
 
 ## Deployment
 
-### Heroku
-* [Report page - `/api/v1`](https://simple-report-system.herokuapp.com/api/v1)
+### Heroku App
+* [電腦問題回報頁面 - `/api/v1/reporter`](https://simple-report-system.herokuapp.com/api/v1/reporter)
     * 提供基本的錯誤回報功能
     * 回報者不需要註冊身份即可匿名回報
-* [User login/register page - `/api/v1/login`](https://simple-report-system.herokuapp.com/api/v1/login)
+* [軟體派送請求頁面 - `/api/v1/delivery`](https://simple-report-system.herokuapp.com/api/v1/delivery)
+    * 當教室使用者（e.g. 老師）需要要求新的軟體安裝派送服務，可以到這邊來向 PC 管理助教線上申請
+* [管理者頁面（需登入） - `/api/v1/login`](https://simple-report-system.herokuapp.com/api/v1/login)
     * 註冊/登入管理者
     * 管理回報紀錄、針對回報紀錄做出修繕事宜、疑難排除
     * **註冊** 需要 PC 助教提供的密鑰
