@@ -7,19 +7,19 @@ Simple report system for PC classroom, let user easily report problems to admin.
 ## Deployment
 
 ### Heroku App
-* [電腦問題回報頁面 - `/api/v1/reporter`](https://simple-report-system.herokuapp.com/api/v1/reporter)
+* [電腦問題回報頁面 - `/v1/reporter`](https://simple-report-system.herokuapp.com/v1/reporter)
     * 提供基本的錯誤回報功能
     * 回報者不需要註冊身份即可匿名回報
-* [軟體派送請求頁面 - `/api/v1/delivery`](https://simple-report-system.herokuapp.com/api/v1/delivery)
+* [軟體派送請求頁面 - `/v1/delivery`](https://simple-report-system.herokuapp.com/v1/delivery)
     * 當教室使用者（e.g. 老師）需要要求新的軟體安裝派送服務，可以到這邊來向 PC 管理助教線上申請
-* [管理者頁面（需登入） - `/api/v1/login`](https://simple-report-system.herokuapp.com/api/v1/login)
+* [管理者頁面（需登入） - `/v1/login`](https://simple-report-system.herokuapp.com/v1/login)
     * 註冊/登入管理者
     * 管理回報紀錄、針對回報紀錄做出修繕事宜、疑難排除
     * **註冊** 需要 PC 助教提供的密鑰
 
 ## Development
 
-* 原始碼只需要補上 `routes/v1/.dbconfig.json` 這個檔案就可以使用（ 內含 database 相關的設定、以及管理者註冊使用的 secret key ），若要用於自己的場域，簡單補上這個檔案設定即可。
+* 原始碼只需要補上 `model/.dbconfig.json` 這個檔案就可以使用（ 內含 database 相關的設定、以及管理者註冊使用的 secret key ），若要用於自己的場域，簡單補上這個檔案設定即可。
 * 目前開發環境使用的是 `MySQL`
 * `.dbconfig.json` 格式：
 ```json
