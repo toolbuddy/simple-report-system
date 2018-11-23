@@ -3,70 +3,19 @@ const router = new express.Router();
 const v1 = require('./v1/v1');
 const model = require('./v1/model')
 const user = require('./v1/user')
+const statics = require('./v1/static_pages')
 
-const {db} = require('./v1/db')
-const {changelog} = require('./v1/changelog')
+const {changelog} = require('../model/changelog')
 
 // running by developer only (cause heroku can't access .git/ folder)
 setTimeout(()=>{
     changelog.sync_with_db()
 }, 5000)
 
-router.use('/', model)
+// routes' entry
+router.use('/v1', v1)
 router.use('/user', user)
-router.use('/api/v1',v1);
-
-/**
- * Some static page
- */
-router.use('/changelog', function(req,res){
-    changelog.get_changelog((err, commits)=>{
-        // sorting commits
-        commits.sort(function(a,b){
-            return new Date(b.date) - new Date(a.date);
-        });
-
-        if(err){
-            // error 
-            res.render('error.ejs', {
-                title: 404,
-                msg: "獲取 Changelog 失敗",
-                code: "unknown errors."
-            })
-        }
-        else{
-            res.render('changelog.ejs',{
-                title: "更新日誌",
-                changelog: commits
-            })
-        }
-    })
-    
-})
-
-router.use('/log', function(req,res){
-    // fetch logger
-    db.fetch_logs((err,logs)=>{
-        db.fetch_deliver_logs((err,deliver_logs)=>{
-            res.render('log.ejs',{
-                title: "PC 助教 の 日誌",
-                finished_request_list: deliver_logs,
-                log_entry: logs
-            })
-        })
-    })
-})
-
-router.use('/about', function(req,res){
-    res.render('about.ejs',{
-        title: "關於 PC 助教的這檔事 ... "
-    })
-})
-
-router.use('/', function(req,res){
-    res.render('landing.ejs',{
-        title: "歡迎使用簡易回報系統！"
-    })
-})
+router.use('/api/v1', model)
+router.use('/', statics)
 
 module.exports = router;

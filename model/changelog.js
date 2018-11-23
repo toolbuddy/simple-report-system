@@ -10,7 +10,7 @@ const {db} = require('./db')
 class changelog{
     constructor(){
         this.changelog = []
-        this.pathtogit = "../../.git"
+        this.pathtogit = "../.git"
         this.init()
     }
 

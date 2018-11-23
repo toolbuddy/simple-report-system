@@ -12,11 +12,45 @@
 
 <div class="container font-fresca">
 	<!-- Purpose -->
-	<h2> <%= title %> </h2>
+    <h2> <%= title %> </h2>
+    <hr>
+	<h3> 已登錄的派送任務排程： </h3>
+    <hr>
+    <table class="table">
+        <thead>
+            <tr>
+            <th scope="col">#ID</th>
+            <th scope="col">指派日期</th>
+            <th scope="col">教室</th>
+            <th scope="col">派送軟體</th>
+            <th scope="col">派送需求</th>
+            <th scope="col">作業系統</th>
+            <th scope="col">備註</th>
+            <th scope="col">期望完成日期</th>
+            <th scope="col">任務指派者</th>
+            </tr>
+        </thead>
+        <tbody id="request_list">
+            <% for(var index in request_list){ %>
+                <tr>
+                <th scope="row"><%= request_list[index].id %></th>
+                <td><%= request_list[index].date %></td>
+                <td><%= request_list[index].classroom_id %></td>
+                <td><%= request_list[index].software_name %></td>
+                <td><%= request_list[index].type %></td>
+                <td><%= request_list[index].os %></td>
+                <td><%= request_list[index].requirements %></td>
+                <td><%= request_list[index].duration %></td>
+                <td><%= request_list[index].requester %></td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+    
 	<hr>
 	<h3> 申請派送軟體： </h3>
     <hr>
-	<form id="delivery" method="GET" action="/deliver">
+	<form id="delivery" method="GET" action="/api/v1/deliver">
 		<div class="form-group">
             <br>
                 <label for="cr">派送目標教室編號:</label>
@@ -27,8 +61,7 @@
                     <option value="Other">Other</option>
                 </select>
             <br>
-            <hr>
-
+            
             <label for="software-name">想要派送的軟體名稱:</label>
             <input id="software_name" class="form-control" name="software_name" value="" placeholder="e.g. MATLAB 2018a">
             <br>
@@ -62,39 +95,6 @@
 	<button type="submit" class="btn btn-primary center-block">提交</button>
 	</form>
 
-	<hr>
-	<h3> 已登錄的派送任務排程： </h3>
-    <hr>
-    <table class="table">
-        <thead>
-            <tr>
-            <th scope="col">#ID</th>
-            <th scope="col">指派日期</th>
-            <th scope="col">教室</th>
-            <th scope="col">派送軟體</th>
-            <th scope="col">派送需求</th>
-            <th scope="col">作業系統</th>
-            <th scope="col">備註</th>
-            <th scope="col">期望完成日期</th>
-            <th scope="col">任務指派者</th>
-            </tr>
-        </thead>
-        <tbody id="request_list">
-            <% for(var index in request_list){ %>
-                <tr>
-                <th scope="row"><%= request_list[index].id %></th>
-                <td><%= request_list[index].date %></td>
-                <td><%= request_list[index].classroom_id %></td>
-                <td><%= request_list[index].software_name %></td>
-                <td><%= request_list[index].type %></td>
-                <td><%= request_list[index].os %></td>
-                <td><%= request_list[index].requirements %></td>
-                <td><%= request_list[index].duration %></td>
-                <td><%= request_list[index].requester %></td>
-                </tr>
-            <% } %>
-        </tbody>
-	</table>
 	<hr>
 </div>
 

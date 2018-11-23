@@ -3,7 +3,7 @@
  * 
  * 
  */
-const {db} = require('./v1/db')
+const {db} = require('../model/db')
 
 
 class wsServer {

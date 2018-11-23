@@ -2,7 +2,7 @@ const express = require( 'express' );
 const jsfs = require('jsonfile')
 const path = require('path')
 const router = new express.Router();
-const {db} = require('./db')
+const {db} = require('../../model/db')
 
 // For deliver
 router.use( '/deliver', (req,res)=>{
@@ -27,7 +27,7 @@ router.use( '/deliver', (req,res)=>{
             title: "Redirecting back to deliver page ...", 
             msg: "成功申請軟體派送，靜候佳音！",
             duration: 2, 
-            url: "/api/v1/delivery"
+            url: "/v1/delivery"
         })
     })
 })
@@ -51,7 +51,7 @@ router.use( '/report', (req,res)=>{
             title: "Redirecting back to report page ...", 
             msg: "成功登錄錯誤內容，感謝回報！",
             duration: 2, 
-            url: "/api/v1/reporter"
+            url: "/v1/reporter"
         })
     })
 })

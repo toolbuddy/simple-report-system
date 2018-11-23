@@ -3,7 +3,7 @@ const jsfs = require('jsonfile')
 const path = require('path')
 const router = new express.Router();
 
-const {db} = require('./db')
+const {db} = require('../../model/db')
 
 // for maintainer login and the continuous manage
 router.use( '/login', (req,res)=>{

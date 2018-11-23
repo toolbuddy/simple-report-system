@@ -14,9 +14,35 @@
 	<!-- Purpose -->
 	<h2> <%= title %> </h2>
 	<hr>
+	<h3> 已登錄的待解決項目： </h3>
+    <hr>
+    <table class="table">
+        <thead>
+            <tr>
+            <th scope="col">#ID</th>
+            <th scope="col">Date</th>
+            <th scope="col">教室編號</th>
+            <th scope="col">座位號碼</th>
+            <th scope="col">發生問題</th>
+            </tr>
+        </thead>
+        <tbody id="problem_list">
+            <% for(var index in error_entry){ %>
+                <tr>
+                <th scope="row"><%= error_entry[index].id %></th>
+                <td><%= error_entry[index].date %></td>
+                <td><%= error_entry[index].classroom_id %></td>
+                <td><%= error_entry[index].seat_id %></td>
+                <td><%= error_entry[index].problem_id %></td>
+                </tr>
+            <% } %>
+        </tbody>
+	</table>
+	
+	<hr>
 	<h3> 請填入欲回報內容： </h3>
     <hr>
-	<form id="reporter" method="GET" action="/report">
+	<form id="reporter" method="GET" action="/api/v1/report">
 		<div class="form-group">
 			<label for="cr">教室編號:</label>
 			<select class="form-control" id="classroom">
@@ -60,32 +86,6 @@
 		
 	<button type="submit" class="btn btn-primary center-block">Submit</button>
 	</form>
-
-	<hr>
-	<h3> 已登錄的待解決項目： </h3>
-    <hr>
-    <table class="table">
-        <thead>
-            <tr>
-            <th scope="col">#ID</th>
-            <th scope="col">Date</th>
-            <th scope="col">教室編號</th>
-            <th scope="col">座位號碼</th>
-            <th scope="col">發生問題</th>
-            </tr>
-        </thead>
-        <tbody id="problem_list">
-            <% for(var index in error_entry){ %>
-                <tr>
-                <th scope="row"><%= error_entry[index].id %></th>
-                <td><%= error_entry[index].date %></td>
-                <td><%= error_entry[index].classroom_id %></td>
-                <td><%= error_entry[index].seat_id %></td>
-                <td><%= error_entry[index].problem_id %></td>
-                </tr>
-            <% } %>
-        </tbody>
-	</table>
 	<hr>
 </div>
 
